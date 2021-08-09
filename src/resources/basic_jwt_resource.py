@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
 import jwt
 import json
-import base64
 
 # HS256 algorithm
 
-class TokenResource:
+class BasicJWT:
 
     def get_security_key(self):
         return 'testsecuritykey'
@@ -25,19 +24,17 @@ class TokenResource:
             if decoded:
                 print(decoded)
                 return True
-        except Exception as e:
-            print(f'Error trying to decode jwt: {e}')
             return False
+        except Exception as e:
+            raise SystemExit(e)
 
 
 if __name__ == '__main__':
     payload = {
         'appKey': 'testappkey'
     }
-    tr = TokenResource()
+    tr = BasicJWT()
     token = tr.create_token(payload)
     print(token)
-    decoded = tr.validate_jwt(token)
-    print(decoded)
-    decoded = tr.validate_jwt(f'{token}123')
-    print(decoded)
+    print(tr.validate_jwt(token))
+    print(tr.validate_jwt(f'{token}123'))
